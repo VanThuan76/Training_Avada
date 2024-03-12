@@ -1,0 +1,11 @@
+# GET http://localhost:8443/api/products
+# GET http://localhost:8443/api/products?limit=10
+# GET http://localhost:8443/api/products?orderBy=asc
+
+# GET http://localhost:8443/api/product/76948
+# GET http://localhost:8443/api/product/76948?fields=name,price
+
+# POST http://localhost:8443/api/products Content-Type: application/json
+# { "name": "VuVanThuan", "price": 1, "description": "None", "product": "None", "color": "blue", "image": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/644.jpg"}
+
+
