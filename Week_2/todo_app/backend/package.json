@@ -1,0 +1,31 @@
+{
+  "name": "be_react_js",
+  "version": "1.0.0",
+  "description": "be_react_js ;>",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "imports": {
+    "#avada/*": "./src/*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "@koa/ejs": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.0.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/koa-ejs": "^4.3.3",
+    "nodemon": "^2.0.7"
+  }
+}

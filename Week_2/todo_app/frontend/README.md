@@ -1,0 +1,1 @@
+In this exercise, you will do this basic todo application from the Digital Ocean guide here: https://www.digitalocean.com/community/tutorials/how-to-build-a-react-to-do-app-with-react-hooks
