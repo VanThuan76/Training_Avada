@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": false,
+      "baseUrl": ".",
+      "paths": {
+        "@avada/*": ["src/*"]
+      }
+    },
+    "type": "module",
+    "include": [
+      "src/**/*"
+  ],
+    "exclude": ["node_modules", "dist"]
+  }

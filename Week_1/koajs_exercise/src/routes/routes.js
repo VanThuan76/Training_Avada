@@ -2,21 +2,43 @@ const Router = require("koa-router");
 const propsUrl = require("#avada/const/index.js");
 const productHandler = require("#avada/handlers/product/productHandlers.js");
 const {
-  productInsertMiddleware, productUpdateMiddleware,
+  productInsertMiddleware,
+  productUpdateMiddleware,
 } = require("#avada/middleware/productInputMiddleware.js");
-const { PREFIX_DOMAIN, VERSION_ENDPOINT } = propsUrl;
+const {selectAllProducts, selectProductById} = require("#avada/database/productRepository.js")
+const { PREFIX_DOMAIN_API, PREFIX_DOMAIN_PAGE, VERSION_ENDPOINT } = propsUrl;
 
 //Configuration for router with properties
 const router = new Router({
-  prefix: PREFIX_DOMAIN,
-  version: VERSION_ENDPOINT,
+  version: VERSION_ENDPOINT
+});
+//Render view router
+router.get(`${PREFIX_DOMAIN_PAGE}/product`, async (ctx) => {
+  const products = selectAllProducts()
+  await ctx.render("pages/product", { products });
+});
+router.get(`${PREFIX_DOMAIN_PAGE}/product/:id`, async (ctx) => {
+  const {id} = ctx.params
+  const product = selectProductById(id)
+  await ctx.render("pages/productDetail", { product });
 });
 
 //Declaration for each router
-router.get("/products", productHandler.getAllProducts);
-router.get("/product/:id", productHandler.getProductById);
-router.post("/products", productInsertMiddleware, productHandler.createProduct);
-router.put("/products/:id", productUpdateMiddleware, productHandler.putProduct);
-router.delete("/products/:id", productHandler.deleteProduct);
+router.get(`${PREFIX_DOMAIN_API}/products`, productHandler.getAllProducts);
+router.get(`${PREFIX_DOMAIN_API}/product/:id`, productHandler.getProductById);
+router.post(
+  `${PREFIX_DOMAIN_API}/products`,
+  productInsertMiddleware,
+  productHandler.createProduct
+);
+router.put(
+  `${PREFIX_DOMAIN_API}/products/:id`,
+  productUpdateMiddleware,
+  productHandler.putProduct
+);
+router.delete(
+  `${PREFIX_DOMAIN_API}/products/:id`,
+  productHandler.deleteProduct
+);
 
 module.exports = router;

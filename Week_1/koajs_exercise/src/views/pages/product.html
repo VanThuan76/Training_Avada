@@ -1,0 +1,13 @@
+<ul class="list-group">
+  <% products.forEach(function (product) {%>
+  <li style="cursor: pointer;" class="list-group-item" id="<%= product.id %>"><%= product.name %></li>
+  <% })%>
+</ul>
+<script>
+  const products = document.querySelectorAll(".list-group-item");
+  products.forEach((product) =>
+    product.addEventListener("click", (e) => {
+      window.location.href = `http://localhost:8443/pages/product/${product.id}`;
+    })
+  );
+</script>

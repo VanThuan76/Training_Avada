@@ -1,0 +1,12 @@
+<div class="card" style="width: 18rem;">
+    <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+    <div class="card-body">
+      <h5 class="card-title"><%= product.name %></h5>
+      <p class="card-text"><%= product.description %></p>
+      <div style="display: flex; gap: 10px">
+        <p class="card-text"><%= product.color %></p>
+        <p class="card-text"><%= product.product %></p>
+      </div>
+      <button href="#" class="btn btn-primary">Buy: <%= product.price %></button>
+    </div>
+  </div>
