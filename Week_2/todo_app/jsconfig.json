@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "jsx": "react",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": false,
+      "baseUrl": ".",
+      "paths": {
+        "@avada/*": ["src/*"]
+      }
+    },
+    "type": "module",
+    "include": [
+      "src/**/*",
+      "./src/js/**/*"
+  ],
+    "exclude": ["node_modules", "dist"]
+  }

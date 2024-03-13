@@ -17,3 +17,12 @@ const step = "warm-up"
 ```
 const step = "react-js"
 ```
+
+### Week-3
+
+- Firebase and Serverless
+- Getting started with shopify
+- Getting stated with Avada CLI
+```
+const step = "firebase and shopify"
+```
