@@ -10,7 +10,7 @@
 const Tag = (props) => {
   return (
     <div
-      className={`min-h-[20px] rounded-lg shadow-md px-1 py-1 md:px-2 md:py-1 cursor-pointer hover:bg-black hover:text-white transition-all ease-in-out ${
+      className={`min-h-[20px] rounded-lg shadow-md px-1 py-1 md:px-2 md:py-1 cursor-pointer bg-white hover:bg-black hover:text-white transition-all ease-in-out ${
         props.title === "DELETE" && "!text-red-500"
       } ${props.color && `bg-${props.color}-300`}`}
       {...props}

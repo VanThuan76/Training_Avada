@@ -63,11 +63,14 @@ function insertTodo(values) {
 function updateTodo(id, values) {
   try {
     if (!id) throw new Error("id is required");
-    const todoById = selectTodoById(id);
-    todos[todoById.id] = { ...values };
+    const todoIndex = todos.findIndex((todo) => todo.id == id);
+    todos[todoIndex].status = values.status;
+    todos[todoIndex].updated_at = values.updated_at;
+    todos[todoIndex].is_deleted = values.is_deleted;
+
     return fs.writeFileSync(
       `${PATH_DIRECTOR_SRC}/src/database/todos.json`,
-      todos
+      JSON.stringify(todos, null, 2)
     );
   } catch (error) {
     console.error(error);

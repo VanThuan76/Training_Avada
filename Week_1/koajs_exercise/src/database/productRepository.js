@@ -45,7 +45,7 @@ function insertProduct(values) {
     };
     const newProducts = JSON.stringify([...products, body], null, 2);
     return fs.writeFileSync(
-      "/Users/macs/Avada/Training/Week_1/koajs_exercise/src/database/products.json",
+      `${PATH_DIRECTOR_SRC}/src/database/products.json`,
       newProducts
     );
   } catch (error) {
@@ -61,11 +61,17 @@ function insertProduct(values) {
 function updateProduct(id, values) {
   try {
     if (!id) throw new Error("id is required");
-    const productById = selectProductById(id);
-    products[productById.id] = { ...values };
+    const productIndex = products.findIndex((product) => product.id == id);
+    products[productIndex].name = values.name || products[productIndex].name
+    products[productIndex].price = values.price || products[productIndex].price
+    products[productIndex].description = values.description || products[productIndex].description
+    products[productIndex].product = values.product || products[productIndex].product
+    products[productIndex].color = values.color || products[productIndex].color
+    products[productIndex].image = values.image || products[productIndex].image
+    
     return fs.writeFileSync(
-      "/Users/macs/Avada/Training/Week_1/koajs_exercise/src/database/products.json",
-      products
+      `${PATH_DIRECTOR_SRC}/src/database/products.json`,
+      JSON.stringify(products, null, 2)
     );
   } catch (error) {
     console.error(error);
@@ -83,7 +89,7 @@ function destroyProduct(id) {
     const productById = selectProductById(id);
     products.splice(productById.id, 1);
     return fs.writeFileSync(
-      "/Users/macs/Avada/Training/Week_1/koajs_exercise/src/database/products.json",
+      `${PATH_DIRECTOR_SRC}/src/database/products.json`,
       products
     );
   } catch (error) {

@@ -11,7 +11,7 @@ const Button = (props) => {
   return (
     <button
       {...props}
-      className={`${props.className} min-w-[60px] max-h-[40px] rounded-lg px-2 py-1 md:px-3 md:py-2 text-center`}
+      className={`${props.className} min-w-[60px] max-h-[40px] rounded-lg px-2 py-1 md:px-3 md:py-2 text-center transition-all ease-in-out`}
     >
       {props.title}
     </button>
