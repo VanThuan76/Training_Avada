@@ -2,41 +2,41 @@
   {
     "id": 1,
     "title": "Test",
-    "status": 2,
+    "status": 0,
     "created_at": "2024-03-12T17:42:43.478Z",
-    "updated_at": "2024-03-13T09:36:10.910Z",
-    "is_deleted": false
+    "updated_at": "2024-03-14T04:08:17.964Z",
+    "is_deleted": true
   },
   {
     "id": 2,
     "title": "Kiem tra",
-    "status": 2,
+    "status": 0,
     "created_at": "2024-03-12T17:59:44.759Z",
-    "updated_at": "2024-03-13T09:36:10.910Z",
-    "is_deleted": false
+    "updated_at": "2024-03-14T04:08:17.964Z",
+    "is_deleted": true
   },
   {
     "id": 3,
     "title": "Avada SaaS",
-    "status": 1,
+    "status": 0,
     "created_at": "2024-03-12T18:03:59.011Z",
-    "updated_at": "2024-03-13T03:24:33.738Z",
-    "is_deleted": false
+    "updated_at": "2024-03-14T04:08:17.964Z",
+    "is_deleted": true
   },
   {
     "id": 4,
     "title": "Redux",
-    "status": 1,
+    "status": 0,
     "created_at": "2024-03-13T01:26:18.270Z",
-    "updated_at": "2024-03-13T03:24:33.738Z",
-    "is_deleted": false
+    "updated_at": "2024-03-14T04:08:17.964Z",
+    "is_deleted": true
   },
   {
     "id": 5,
     "title": "Tes Again",
-    "status": 2,
+    "status": 1,
     "created_at": "2024-03-13T01:47:46.956Z",
-    "updated_at": "2024-03-13T09:36:10.910Z",
+    "updated_at": "2024-03-15T01:58:00.360Z",
     "is_deleted": false
   },
   {
@@ -52,7 +52,31 @@
     "title": "Test",
     "status": 1,
     "created_at": "2024-03-13T09:57:56.463Z",
-    "updated_at": "2024-03-13T09:58:05.842Z",
+    "updated_at": "2024-03-15T01:58:00.360Z",
+    "is_deleted": false
+  },
+  {
+    "id": 8,
+    "title": "Review",
+    "status": 2,
+    "created_at": "2024-03-14T04:04:28.925Z",
+    "updated_at": "2024-03-14T04:04:28.925Z",
+    "is_deleted": false
+  },
+  {
+    "id": 9,
+    "title": "Review_2",
+    "status": 0,
+    "created_at": "2024-03-14T04:05:18.072Z",
+    "updated_at": "2024-03-14T04:07:12.322Z",
+    "is_deleted": true
+  },
+  {
+    "id": 10,
+    "title": "Refactor Code",
+    "status": 2,
+    "created_at": "2024-03-15T01:52:01.992Z",
+    "updated_at": "2024-03-15T01:52:01.992Z",
     "is_deleted": false
   }
 ]

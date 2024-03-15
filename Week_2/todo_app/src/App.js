@@ -15,20 +15,21 @@ const App = () => {
   const [changeTodo, setChangeTodo] = useState([])
   const { todos, checkbox, isConfirmed } = useAppSelector((state) => state.appSlice);
   const [isShowFormCreate, setIsShowFormCreate] = useState(false);
+  const getData = async () => {
+    try {
+      const res = await fetchAsync("/todos");
+      dispatch(getTodo(res.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetchAsync("/todos");
-        dispatch(getTodo(res.data));
-      } catch (error) {
-        console.error(error);
-      }
-    };
     getData();
   }, []);
+
   useEffect(() => {
     dispatch(changeTodos(changeTodo))
-  }, [changeTodo.length > 0])
+  }, [changeTodo])
   return (
     <main className="grid grid-cols-1 md:justify-between md:items-center md:place-content-center h-full my-auto mx-4 md:mx-8 lg:mx-16">
       <div className="mb-5 md:mb-10 w-full flex flex-col md:flex-row justify-end items-end md:gap-5">

@@ -11,20 +11,24 @@ function taskTwo(users) {
 }
 
 /**
- * TaskThree
+ * TaskThree //refrence as email
  * @param {{users: {id: number; name: string; username: string; email: string; address: {street: string; suite: string; city: string; zipcode: string; geo: {lat: string; lng: string}}; phone: string; website: string; company: {name: string; catchPhrase: string; bs: string;}}[]; posts: {userId: number; id: number; title: string; body: string;}[]; comments: {postId: number; id: number; name: string; email: string; body: string;}[]}} data
  * @return {{id: number; name: string; username: string; email: string; comments: {postId: number; id: number; name: string; email: string; body: string;}[]; posts: {userId: number; id: number; title: string; body: string;}[]}[]}
  */
 function taskThree(data) {
   if (!data.users || !data.posts || !data.comments) return ERROR_MESSAGE_COMMON;
+
   //Map array of users to assigned properties user's posts and user's comments
   data.users.map((user) => {
-    const postUser = data.posts.filter((post) => post.userId === user.id);
-    const commentPost = data.comments.filter((comment) =>
-      postUser.map((post) => post.id).find((id) => id === comment.postId)
-    );
-    user.posts = postUser;
-    user.comments = commentPost;
+    // FIXME: Refactor
+    const commentUser = data.comments.filter((comment) => comment.email === user.email);
+    const postComment = data.posts.filter((post) => commentUser.some((comment) => comment.postId === post.id))
+    user.posts = postComment;
+    user.comments = commentUser;
+    // const postUser = data.posts.filter((post) => post.userId === user.id);
+    // const commentPost = data.comments.filter((comment) =>
+    //   postUser.map((post) => post.id).find((id) => id === comment.postId)
+    // );
   });
   return data.users;
 }
@@ -47,8 +51,8 @@ function taskFour(users) {
 function taskFive(users) {
   if (!users) return ERROR_MESSAGE_COMMON;
   return users.map((user) => {
-    user.postsCount = user.posts?.length;
-    user.commentsCount = user.comments?.length;
+    user.postsCount = user.posts.length;
+    user.commentsCount = user.comments.length;
   });
 }
 
@@ -61,20 +65,31 @@ function taskFive(users) {
 function taskSix(users, type = "comments") {
   if (!users) return ERROR_MESSAGE_COMMON;
   let result; 
-  //TODO: O(n^2)-> Find suitable algorithm
-  for (let i = 0; i < users.length; i++) {
-    for (let j = 1; j < i; j++) {
-      if (
-        type === "comments"
-          ? users[i].comments.length > users[j].comments.length
-          : users[i].posts.length > users[j].posts.length
-      ) {
-        result = users[i];
-      } else {
-        result = users[j];
-      }
+  // FIXME: Refactor
+  result = users.reduce((acc, curr) => {
+    const currentCount = type === "comments" ? curr.comments.length : curr.posts.length;
+    const accumulationCount = acc ? acc.count : 0;
+    
+    if (currentCount > accumulationCount) {
+      return { user: curr, count: currentCount };
+    } else {
+      return accumulationCount;
     }
-  }
+  }, null)
+  //TODO: O(n^2)-> Find suitable algorithm - property reduce (MAX)
+  // for (let i = 0; i < users.length; i++) {
+  //   for (let j = 1; j < i; j++) {
+  //     if (
+  //       type === "comments" 
+  //         ? users[i].comments.length > users[j].comments.length
+  //         : users[i].posts.length > users[j].posts.length
+  //     ) {
+  //       result = users[i];
+  //     } else {
+  //       result = users[j];
+  //     }
+  //   }
+  // }
   return result;
 }
 

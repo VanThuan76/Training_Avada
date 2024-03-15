@@ -5,12 +5,12 @@ const products = require("#avada/database/products.json");
  * SELECT * products from json()
  * @return {{ id: number; name: string; price: number; description: string; product: string; color: string; createdAt: string; image: string;}[]}
  */
-function selectAllProducts() {
+function selectAllProducts() { //Find docs name
   try {
     return products;
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return []
   }
 }
 
@@ -22,10 +22,10 @@ function selectAllProducts() {
 function selectProductById(id) {
   try {
     if (!id) throw new Error("id is required");
-    return products.find((product) => +product.id === +id);
+    return products.find((product) => product.id === parseInt(id));
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return {}
   }
 }
 
@@ -50,7 +50,7 @@ function insertProduct(values) {
     );
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return false
   }
 }
 /**
@@ -62,12 +62,16 @@ function updateProduct(id, values) {
   try {
     if (!id) throw new Error("id is required");
     const productIndex = products.findIndex((product) => product.id == id);
-    products[productIndex].name = values.name || products[productIndex].name
-    products[productIndex].price = values.price || products[productIndex].price
-    products[productIndex].description = values.description || products[productIndex].description
-    products[productIndex].product = values.product || products[productIndex].product
-    products[productIndex].color = values.color || products[productIndex].color
-    products[productIndex].image = values.image || products[productIndex].image
+
+    // FIXME: Refactor
+    products.map(product => product.id === productIndex ? {...product, ...values} : product)
+    // Old
+    // products[productIndex].name = values.name || products[productIndex].name
+    // products[productIndex].price = values.price || products[productIndex].price
+    // products[productIndex].description = values.description || products[productIndex].description
+    // products[productIndex].product = values.product || products[productIndex].product
+    // products[productIndex].color = values.color || products[productIndex].color
+    // products[productIndex].image = values.image || products[productIndex].image
     
     return fs.writeFileSync(
       `${PATH_DIRECTOR_SRC}/src/database/products.json`,
@@ -75,7 +79,7 @@ function updateProduct(id, values) {
     );
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return false
   }
 }
 /**
@@ -94,7 +98,7 @@ function destroyProduct(id) {
     );
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return false
   }
 }
 

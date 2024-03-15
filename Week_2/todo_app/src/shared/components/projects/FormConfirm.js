@@ -14,12 +14,15 @@ const FormConfirm = (props) => {
     const updatedTodos = props.data.map((todo) => ({
       ...todo,
       status: todo.status,
-      updated_at: new Date().toISOString(),
+      updated_at: new Date(),
       is_deleted: todo.status === 0 ? true : false,
     }));
     try {
       for (const todo of updatedTodos) {
-        await fetchAsync(`/todos/${todo.id}`, "PUT", todo);
+        const res = await fetchAsync(`/todos/${todo.id}`, "PUT", todo);
+        if (res.status !== 200) {
+          throw new Error("Something went wrong");
+        }
       }
       dispatch(updateTodo(updatedTodos));
       props.setIsToggle(false);

@@ -24,7 +24,7 @@ function main() {
     `${process.env.NODE_PUBLIC_FAKE_API}/posts/1`,
     `${process.env.NODE_PUBLIC_FAKE_API}/comments?postId=1`,
   ];
-  fetchAllAsync(urls)
+  fetchAllAsync(urls) //await
     .then((data) => {
       const [users, posts, comments, postById, commentByPostId] = data;
       taskTwo(users);

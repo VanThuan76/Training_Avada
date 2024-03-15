@@ -19,9 +19,12 @@ const FormCreate = (props) => {
       updated_at: new Date().toISOString(),
       is_deleted: false
     }
-    await fetchAsync('/todos', 'POST', body);
-    dispatch(addTodo(body))
-    props.setIsToggle(false)
+    //FIXME: Refactor
+    const res = await fetchAsync('/todos', 'POST', body);
+    if(res.status === 201) {
+      dispatch(addTodo(body))
+      props.setIsToggle(false)
+    }
   }
   return (
     <form onSubmit={handleSubmit} className="w-full flex flex-col">
