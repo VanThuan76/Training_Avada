@@ -21,18 +21,16 @@ const ModalPolaris = (props) => {
   );
 
   return (
-    <div className="max-h-[500px]">
-      <Frame>
-        <Modal
-          activator={props.activator}
-          open={props.active}
-          onClose={handleChange}
-          title={props.title}
-        >
-          <Modal.Section>{props.body}</Modal.Section>
-        </Modal>
-      </Frame>
-    </div>
+    <Frame>
+      <Modal
+        activator={props.activator}
+        open={props.active}
+        onClose={handleChange}
+        title={props.title}
+      >
+        <Modal.Section>{props.body}</Modal.Section>
+      </Modal>
+    </Frame>
   );
 };
 export default ModalPolaris;

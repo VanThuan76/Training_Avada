@@ -1,19 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  todos: [
-    {
-      id: 0,
-      title: "",
-      status: null,
-      created_at: "",
-      updated_at: "string",
-      is_deleted: false,
-    },
-  ],
+  todos: [],
   checkbox: [],
   todosChanged: [],
+  search: "",
   isConfirmed: false,
+  isLoading: true
 };
 
 const appSlice = createSlice({
@@ -24,7 +17,7 @@ const appSlice = createSlice({
       state.todos = action.payload;
     },
     addTodo: (state, action) => {
-      state.todos.push(action.payload);
+      state.todos.unshift(action.payload);
     },
     updateTodo: (state, action) => {
       const updatedTodos = action.payload.map((updatedTodoData) => {
@@ -64,6 +57,12 @@ const appSlice = createSlice({
     confirm: (state, action) => {
       state.isConfirmed = !action.payload;
     },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
   },
 });
 
@@ -74,5 +73,7 @@ export const {
   chooseTodo,
   changeTodos,
   confirm,
+  setLoading,
+  setSearch
 } = appSlice.actions;
 export default appSlice.reducer;

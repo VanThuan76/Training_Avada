@@ -1,19 +1,21 @@
 import "./index.css";
-import "./polaris.css";
+import "@shopify/polaris/build/esm/styles.css";
 import App from "./App";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import { store } from "@avada/shared/store";
 import { AppProvider } from "@shopify/polaris";
-import translations from "@shopify/polaris/locales/en.json";
+import en from "@shopify/polaris/locales/en.json";
+//dynamic import 
+
+import reportWebVitals from "./reportWebVitals";
+import { store } from "@avada/shared/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AppProvider i18n={translations}>
+    <AppProvider i18n={en}>
       <Provider store={store}>
         <App />
       </Provider>

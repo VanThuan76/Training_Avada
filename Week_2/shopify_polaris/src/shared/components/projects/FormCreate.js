@@ -1,10 +1,5 @@
 import { useCallback, useState } from "react";
-import {
-  Button,
-  Form,
-  FormLayout,
-  TextField,
-} from "@shopify/polaris";
+import { Button, Form, FormLayout, TextField } from "@shopify/polaris";
 
 import { useAppDispatch, useAppSelector } from "@avada/shared/hooks/useRedux";
 import { addTodo } from "@avada/shared/store/slice";
@@ -24,9 +19,11 @@ const FormCreate = (props) => {
       updated_at: new Date().toISOString(),
       is_deleted: false,
     };
-    await fetchAsync("/todos", "POST", body);
-    dispatch(addTodo(body));
-    props.setIsToggle(false);
+    const res = await fetchAsync("/todos", "POST", body);
+    if (res.status === 201) {
+      dispatch(addTodo(body));
+      props.setIsToggle(false);
+    }
   }
   return (
     <Form onSubmit={handleSubmit}>

@@ -15,8 +15,8 @@ const FormCreate = (props) => {
       id: todos[todos.length - 1].id + 1,
       title: title,
       status: 2, //Default "INCOMPLETE"
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      created_at: new Date(),
+      updated_at: new Date(),
       is_deleted: false
     }
     //FIXME: Refactor

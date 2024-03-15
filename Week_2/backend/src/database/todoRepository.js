@@ -74,7 +74,7 @@ function updateTodo(id, values) {
     );
   } catch (error) {
     console.error(error);
-    throw new Error(error.message);
+    return false
   }
 }
 /**

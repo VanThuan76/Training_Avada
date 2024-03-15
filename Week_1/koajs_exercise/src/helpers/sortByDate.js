@@ -1,4 +1,4 @@
-const { convertToTimestamp } = require("#avada/helpers/convertDate.js");
+const { convertToTimestamp } = require("#avada/helpers/convertDate");
 
 /**
  * Sort By Date

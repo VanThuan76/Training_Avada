@@ -2,7 +2,7 @@ import { Button, Form, FormLayout } from "@shopify/polaris";
 
 import { fetchAsync } from "@avada/core/fetch";
 import { useAppDispatch } from "@avada/shared/hooks/useRedux";
-import { chooseTodo, updateTodo } from "@avada/shared/store/slice";
+import { updateTodo } from "@avada/shared/store/slice";
 /**
  * Form confirm to change status TODO
  * @param {object[]} props - data TODO
@@ -10,8 +10,7 @@ import { chooseTodo, updateTodo } from "@avada/shared/store/slice";
  */
 const FormConfirm = (props) => {
   const dispatch = useAppDispatch();
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit() {
     const updatedTodos = props.data.map((todo) => ({
       ...todo,
       status: todo.status,
@@ -20,11 +19,13 @@ const FormConfirm = (props) => {
     }));
     try {
       for (const todo of updatedTodos) {
-        await fetchAsync(`/todos/${todo.id}`, "PUT", todo);
+        const res = await fetchAsync(`/todos/${todo.id}`, "PUT", todo);
+        if (res.status !== 200) {
+          throw new Error("Something went wrong");
+        }
       }
       dispatch(updateTodo(updatedTodos));
       props.setIsToggle(false);
-      dispatch(chooseTodo([]))
     } catch (error) {
       console.error("Error updating todos:", error);
     }

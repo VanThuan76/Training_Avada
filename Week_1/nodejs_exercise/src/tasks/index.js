@@ -22,7 +22,7 @@ function taskThree(data) {
   data.users.map((user) => {
     // FIXME: Refactor
     const commentUser = data.comments.filter((comment) => comment.email === user.email);
-    const postComment = data.posts.filter((post) => commentUser.some((comment) => comment.postId === post.id))
+    const postComment = data.posts.filter((post) => commentUser.postId === post.id)
     user.posts = postComment;
     user.comments = commentUser;
     // const postUser = data.posts.filter((post) => post.userId === user.id);
@@ -69,7 +69,6 @@ function taskSix(users, type = "comments") {
   result = users.reduce((acc, curr) => {
     const currentCount = type === "comments" ? curr.comments.length : curr.posts.length;
     const accumulationCount = acc ? acc.count : 0;
-    
     if (currentCount > accumulationCount) {
       return { user: curr, count: currentCount };
     } else {

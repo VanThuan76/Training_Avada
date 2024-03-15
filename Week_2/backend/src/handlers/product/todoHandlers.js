@@ -13,11 +13,11 @@ const { convertToTimestamp } = require("#avada/helpers/convertDate.js");
  */
 async function getAllTodos(ctx) {
   try {
-    const { limit, orderBy } = ctx.query;
+    const { limit, orderBy = "desc", search = "" } = ctx.query;
     let todos = selectAllTodos();
     todos = limit ? todos.slice(0, limit) : todos;
-    todos = orderBy
-      ? orderBy === "asc" && todos
+    todos =
+      orderBy === "asc" && todos
         ? todos.sort(
             (a, b) =>
               convertToTimestamp(a.created_at) -
@@ -27,13 +27,19 @@ async function getAllTodos(ctx) {
             (a, b) =>
               convertToTimestamp(b.created_at) -
               convertToTimestamp(a.created_at)
-          )
+          );
+    todos = search
+      ? todos.filter((todo) => {
+          const lowerCaseTitle = todo.title.toLowerCase();
+          const lowerCaseSearch = search.toLowerCase();
+          return lowerCaseTitle.includes(lowerCaseSearch);
+        })
       : todos;
     return (ctx.body = {
       status: 200,
       data: todos,
       message: "Successfully",
-      count: todos.length
+      count: todos.length,
     });
   } catch (error) {
     console.error(error);
@@ -44,7 +50,6 @@ async function getAllTodos(ctx) {
     });
   }
 }
-
 /**
  * Get Todo By Id
  * @param  ctx
@@ -115,7 +120,7 @@ async function putTodo(ctx) {
   try {
     const { id } = ctx.params;
     const body = ctx.request.body;
-    updateTodo(id, body);
+    const data = updateTodo(id, body);
     return (ctx.body = {
       status: 200,
       data: { ...data, id },
