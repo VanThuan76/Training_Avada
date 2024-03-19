@@ -1,0 +1,44 @@
+{
+  "name": "be_firestore_react_js",
+  "version": "1.0.0",
+  "description": "be_firestore_react_js ;>",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint .",
+    "serve": "firebase serve",
+    "shell": "firebase functions:shell",
+    "start-shell": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "imports": {
+    "#avada/*": "./src/*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "@koa/ejs": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^4.8.0",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^10.0.0",
+    "lodash.pick": "^4.4.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/koa-ejs": "^4.3.3",
+    "nodemon": "^2.0.7"
+  }
+}
