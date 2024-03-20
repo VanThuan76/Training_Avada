@@ -26,3 +26,11 @@ const step = "react-js"
 ```
 const step = "firebase and shopify"
 ```
+
+### Week-4
+
+- Simple Sales Notifications
+- This is a Shopify application which helps merchants to display recent sales as notifications on their store. Whenever there is new sales, the notification list should be updated as well. With this app, merchants can customize how the popup display from our app backend easily with beautiful design.
+```
+const step = "final exam: simple sales pop"
+```

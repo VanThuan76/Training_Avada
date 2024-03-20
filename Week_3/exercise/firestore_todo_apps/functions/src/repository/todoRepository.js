@@ -17,7 +17,7 @@ async function selectAllTodos(limit, orderBy) {
   try {
     const collection = db.collection("todo");
     const todosQuery = collection
-      .orderBy(orderBy.field, orderBy.value)
+      .orderBy(orderBy.field, orderBy.value) //indexes
       .limit(parseInt(limit));
 
     //Excute a query
