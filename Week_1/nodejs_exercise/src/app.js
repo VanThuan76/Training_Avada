@@ -38,6 +38,6 @@ function main() {
     .catch((error) => {
       console.error(error);
     });
-  return 1;
+  return true;
 }
 main();

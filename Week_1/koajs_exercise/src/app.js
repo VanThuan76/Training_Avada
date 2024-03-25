@@ -9,7 +9,6 @@ dotenv.config();
 if (!process.env.NODE_PORT) {
   process.exit(1);
 }
-//Initialize configuration with "KoaJs"
 const app = new Koa();
 //Render app view
 render(app, {
@@ -22,8 +21,6 @@ render(app, {
 app.use(koaBody());
 app.use(routes.routes());
 app.use(routes.allowedMethods());
-
-//Server listenning on port
 app.listen(process.env.NODE_PORT, () => {
   console.log(`Server port ${process.env.NODE_PORT} up and running...`);
 });

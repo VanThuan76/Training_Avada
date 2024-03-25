@@ -1,5 +1,12 @@
-const { convertToTimestamp } = require("#avada/helpers/convertDate");
-
+/**
+ * Convert Date As TimeStamp To Compare
+ * @param {value: string} value
+ * @return {string}
+ */
+function convertToTimestamp(value) {
+  const timestampDate = new Date(Date.parse(value));
+  return timestampDate;
+}
 /**
  * Sort By Date
  * @param {{data, orderBy}} args
@@ -19,4 +26,5 @@ function sortByDate(args) {
 
 module.exports = {
   sortByDate,
+  convertToTimestamp,
 };

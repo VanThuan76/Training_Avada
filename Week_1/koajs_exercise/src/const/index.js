@@ -7,5 +7,6 @@ const PATH_DIRECTOR_SRC = "/Users/macs/Avada/Training/Week_1/koajs_exercise"
 module.exports = {
     PREFIX_DOMAIN_API,
     PREFIX_DOMAIN_PAGE,
-    VERSION_ENDPOINT
+    VERSION_ENDPOINT,
+    PATH_DIRECTOR_SRC
 }

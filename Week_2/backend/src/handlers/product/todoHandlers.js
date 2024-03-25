@@ -5,7 +5,6 @@ const {
   updateTodo,
   destroyTodo,
 } = require("#avada/database/todoRepository.js");
-const { convertToTimestamp } = require("#avada/helpers/convertDate.js");
 /**
  * Get all list of todos with parameters is limit or orderBy
  * @param  ctx
@@ -13,33 +12,12 @@ const { convertToTimestamp } = require("#avada/helpers/convertDate.js");
  */
 async function getAllTodos(ctx) {
   try {
-    const { limit, orderBy = "desc", search = "" } = ctx.query;
-    let todos = selectAllTodos();
-    todos = limit ? todos.slice(0, limit) : todos;
-    todos =
-      orderBy === "asc" && todos
-        ? todos.sort(
-            (a, b) =>
-              convertToTimestamp(a.created_at) -
-              convertToTimestamp(b.created_at)
-          )
-        : todos.sort(
-            (a, b) =>
-              convertToTimestamp(b.created_at) -
-              convertToTimestamp(a.created_at)
-          );
-    todos = search
-      ? todos.filter((todo) => {
-          const lowerCaseTitle = todo.title.toLowerCase();
-          const lowerCaseSearch = search.toLowerCase();
-          return lowerCaseTitle.includes(lowerCaseSearch);
-        })
-      : todos;
+    const {todos, totalPage} = selectAllTodos(ctx.query);
     return (ctx.body = {
       status: 200,
       data: todos,
       message: "Successfully",
-      count: todos.length,
+      totalPage: totalPage,
     });
   } catch (error) {
     console.error(error);
@@ -59,26 +37,12 @@ async function getTodoById(ctx) {
   try {
     const { id } = ctx.params;
     const { fields } = ctx.request.query;
-    const todo = selectTodoById(id);
-    let todoWithFields = {};
-    const arrFields = (fields && todo && fields.split(",")) || [];
-    for (let i = 0; i < arrFields.length; i++) {
-      todoWithFields[arrFields[i]] = todo[arrFields[i]];
-    }
-
-    return (ctx.body = fields
-      ? todoWithFields
-      : todo
-      ? {
-          status: 200,
-          data: todo,
-          message: "Successfully",
-        }
-      : {
-          status: 401,
-          data: [],
-          message: "Not Found By Id",
-        });
+    const todo = selectTodoById(id, fields);
+    return (ctx.body = {
+      status: 200,
+      data: todo,
+      message: "Successfully",
+    });
   } catch (error) {
     console.error(error);
     return (ctx.body = {
@@ -119,8 +83,8 @@ async function createTodo(ctx) {
 async function putTodo(ctx) {
   try {
     const { id } = ctx.params;
-    const body = ctx.request.body;
-    const data = updateTodo(id, body);
+    const todo = ctx.request.body;
+    const data = updateTodo(id, todo);
     return (ctx.body = {
       status: 200,
       data: { ...data, id },

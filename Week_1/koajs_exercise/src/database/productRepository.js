@@ -1,31 +1,47 @@
 const fs = require("fs");
-const products = require("#avada/database/products.json");
+const pick = require("lodash.pick");
+
+const { PATH_DIRECTOR_SRC } = require("#avada/const/index.js");
+const { sortByDate } = require("#avada/helpers/utils/dateHelpers.js");
+let products = require("#avada/database/products.json");
 
 /**
  * SELECT * products from json()
+ * @param {{limit: number; orderBy: string}} query
  * @return {{ id: number; name: string; price: number; description: string; product: string; color: string; createdAt: string; image: string;}[]}
  */
-function selectAllProducts() { //Find docs name
+function selectAllProducts(query) {
   try {
+    // FIXME: Refactor-V2
+    const { orderBy, limit } = query;
+    products = orderBy ? sortByDate({ products, orderBy }) : products;
+    products = limit ? products.slice(0, limit) : products;
     return products;
   } catch (error) {
     console.error(error);
-    return []
+    return [];
   }
 }
 
 /**
  * SELECT * products from json() WHERE id = {?}
- * @param {id: number} id
+ * @param {number} id
+ * @param {string} fields
  * @return {{ id: number; name: string; price: number; description: string; product: string; color: string; createdAt: string; image: string;}}
  */
-function selectProductById(id) {
+function selectProductById(id, fields) {
   try {
     if (!id) throw new Error("id is required");
-    return products.find((product) => product.id === parseInt(id));
+    // FIXME: Refactor-V2
+    let product = products.find((product) => product.id === parseInt(id));
+    if (fields) {
+      const arrFields = (product && fields.split(",")) || [];
+      product = arrFields.length > 0 ? pick(product, arrFields) : product;
+    }
+    return product;
   } catch (error) {
     console.error(error);
-    return {}
+    return {};
   }
 }
 
@@ -50,7 +66,7 @@ function insertProduct(values) {
     );
   } catch (error) {
     console.error(error);
-    return false
+    return false;
   }
 }
 /**
@@ -61,25 +77,19 @@ function insertProduct(values) {
 function updateProduct(id, values) {
   try {
     if (!id) throw new Error("id is required");
+    // FIXME: Refactor-V2
     const productIndex = products.findIndex((product) => product.id == id);
-
-    // FIXME: Refactor
-    products.map(product => product.id === productIndex ? {...product, ...values} : product)
-    // Old
-    // products[productIndex].name = values.name || products[productIndex].name
-    // products[productIndex].price = values.price || products[productIndex].price
-    // products[productIndex].description = values.description || products[productIndex].description
-    // products[productIndex].product = values.product || products[productIndex].product
-    // products[productIndex].color = values.color || products[productIndex].color
-    // products[productIndex].image = values.image || products[productIndex].image
-    
+    products[productIndex] = {
+      ...products[productIndex],
+      ...values,
+    };
     return fs.writeFileSync(
       `${PATH_DIRECTOR_SRC}/src/database/products.json`,
       JSON.stringify(products, null, 2)
     );
   } catch (error) {
     console.error(error);
-    return false
+    return false;
   }
 }
 /**
@@ -98,7 +108,7 @@ function destroyProduct(id) {
     );
   } catch (error) {
     console.error(error);
-    return false
+    return false;
   }
 }
 
@@ -107,5 +117,5 @@ module.exports = {
   selectProductById,
   insertProduct,
   updateProduct,
-  destroyProduct
+  destroyProduct,
 };

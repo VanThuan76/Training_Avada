@@ -20,15 +20,11 @@ function taskThree(data) {
 
   //Map array of users to assigned properties user's posts and user's comments
   data.users.map((user) => {
-    // FIXME: Refactor
+    // FIXME: Refactor-V1
     const commentUser = data.comments.filter((comment) => comment.email === user.email);
     const postComment = data.posts.filter((post) => commentUser.postId === post.id)
     user.posts = postComment;
     user.comments = commentUser;
-    // const postUser = data.posts.filter((post) => post.userId === user.id);
-    // const commentPost = data.comments.filter((comment) =>
-    //   postUser.map((post) => post.id).find((id) => id === comment.postId)
-    // );
   });
   return data.users;
 }
@@ -65,7 +61,7 @@ function taskFive(users) {
 function taskSix(users, type = "comments") {
   if (!users) return ERROR_MESSAGE_COMMON;
   let result; 
-  // FIXME: Refactor
+  // FIXME: Refactor-V1
   result = users.reduce((acc, curr) => {
     const currentCount = type === "comments" ? curr.comments.length : curr.posts.length;
     const accumulationCount = acc ? acc.count : 0;
@@ -75,20 +71,6 @@ function taskSix(users, type = "comments") {
       return accumulationCount;
     }
   }, null)
-  //TODO: O(n^2)-> Find suitable algorithm - property reduce (MAX)
-  // for (let i = 0; i < users.length; i++) {
-  //   for (let j = 1; j < i; j++) {
-  //     if (
-  //       type === "comments" 
-  //         ? users[i].comments.length > users[j].comments.length
-  //         : users[i].posts.length > users[j].posts.length
-  //     ) {
-  //       result = users[i];
-  //     } else {
-  //       result = users[j];
-  //     }
-  //   }
-  // }
   return result;
 }
 

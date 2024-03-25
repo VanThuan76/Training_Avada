@@ -9,5 +9,5 @@ function convertToTimestamp(value) {
 }
 
 module.exports = {
-    convertToTimestamp
-}
+  convertToTimestamp,
+};

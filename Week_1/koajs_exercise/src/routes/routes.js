@@ -1,14 +1,13 @@
 const Router = require("koa-router");
-const propsUrl = require("#avada/const/index.js");
 const productHandler = require("#avada/handlers/product/productHandlers.js");
 const {
   productInsertMiddleware,
   productUpdateMiddleware,
 } = require("#avada/middleware/productInputMiddleware.js");
 const {selectAllProducts, selectProductById} = require("#avada/database/productRepository.js")
+const propsUrl = require("#avada/const/index.js");
 const { PREFIX_DOMAIN_API, PREFIX_DOMAIN_PAGE, VERSION_ENDPOINT } = propsUrl;
 
-//Configuration for router with properties
 const router = new Router({
   version: VERSION_ENDPOINT
 });
