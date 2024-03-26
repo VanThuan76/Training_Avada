@@ -7,11 +7,10 @@ import { addTodo } from "@avada/actions/todo";
 import useMutation from "@avada/hooks/api/useMutation";
 /**
  * Form create todo
- * @param {{setIsToggle: Function}} props
+ * @param {{setIsToggle: Function, dispatch: Function}} props
  * @return {JSX.Element}
  */
 const FormCreate = (props) => {
-  const [state, dispatch] = useReducer(reducerSlice, initialState);
   const [title, setTitle] = useState("");
   const mutate = useMutation();
   const handleChange = useCallback((newValue) => setTitle(newValue), []);
@@ -28,7 +27,7 @@ const FormCreate = (props) => {
       body,
     );
     if (response.status === 201) {
-      addTodo(dispatch, body);
+      addTodo(props.dispatch, body);
       props.setIsToggle(false);
     }
   }

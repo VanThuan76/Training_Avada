@@ -5,7 +5,6 @@ const {
   updateTodo,
   destroyTodo,
 } = require("#avada/repository/todoRepository.js");
-const pick = require('lodash.pick');
 
 /**
  * Get all list of todos with parameters is limit or orderBy
@@ -14,18 +13,12 @@ const pick = require('lodash.pick');
  */
 async function getAllTodos(ctx) {
   try {
-    const { limit = 10, orderBy = "desc" } = ctx.query;
-    const orderDefault = {
-      field: "created_at",
-      value: orderBy,
-    };
-    let todos = await selectAllTodos(limit, orderDefault);
-
+    const { todos, totalPages } = await selectAllTodos(ctx.query);
     return (ctx.body = {
       status: 200,
       data: todos,
       message: "Successfully",
-      count: todos.length,
+      totalPage: totalPages,
     });
   } catch (error) {
     console.error(error);
@@ -45,16 +38,10 @@ async function getTodoById(ctx) {
   try {
     const { id } = ctx.params;
     const { fields } = ctx.request.query;
-    const todo = await selectTodoById(id);
-
-    let todoWithFields = {};
-    const arrFields = (fields && todo && fields.split(",")) || [];
-    todoWithFields = pick(todo, arrFields)
-    const todoFillter = fields ? todoWithFields : todo;
-
+    const todo = await selectTodoById(id, fields);
     return (ctx.body = {
       status: 200,
-      data: todoFillter,
+      data: todo,
       message: "Successfully",
     });
   } catch (error) {
@@ -101,7 +88,7 @@ async function putTodo(ctx) {
     const data = updateTodo(id, body);
     return (ctx.body = {
       status: 200,
-      data: { ...data, id },
+      data: { ...data },
       message: "Successfully",
     });
   } catch (error) {
@@ -121,7 +108,7 @@ async function putTodo(ctx) {
 async function deleteTodo(ctx) {
   try {
     const { id } = ctx.params;
-    await destroyTodo(id);
+    destroyTodo(id);
     return (ctx.body = {
       status: 200,
       message: "Successfully",

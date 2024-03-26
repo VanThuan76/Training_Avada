@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 const propsUrl = require("#avada/const/index.js");
-const todoHandler = require("#avada/handlers/api/controllers/todoHandlers.js");
+const todoHandler = require("#avada/controllers/todoControllers.js");
 const {
   toDoInsertMiddleware,
   todoUpdateMiddleware,

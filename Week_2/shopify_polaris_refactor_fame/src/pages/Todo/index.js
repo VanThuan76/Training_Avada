@@ -115,7 +115,7 @@ const ToDoPage = () => {
       </Bleed>
       <Modal open={isShowFormCreate} onClose={handleClose} title="Create Todo">
         <Modal.Section>
-          <FormCreate setIsToggle={setIsShowFormCreate} />
+          <FormCreate setIsToggle={setIsShowFormCreate} dispatch={dispatch} />
         </Modal.Section>
       </Modal>
       <Modal
