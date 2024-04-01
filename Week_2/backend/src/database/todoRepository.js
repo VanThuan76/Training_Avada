@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require('path');
 const pick = require("lodash.pick");
 
 let todos = require("#avada/database/todos.json");
@@ -83,14 +84,18 @@ function updateTodo(id, values) {
     if (!id) throw new Error("id is required");
     // FIXME: Refactor-V2
     const todoIndex = todos.findIndex((todo) => todo.id == id);
+    if (todoIndex === -1) {
+      throw new Error("Todo not found");
+    }
     todos[todoIndex] = {
       ...todos[todoIndex],
+      updated_at: new Date(),
       ...values,
     };
-    return fs.writeFileSync(
-      `${PATH_DIRECTOR_SRC}/src/database/todos.json`,
-      JSON.stringify(todos, null, 2)
-    );
+    const filePath = path.join(PATH_DIRECTOR_SRC, '/src/database/todos.json');
+    fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
+
+    return true;
   } catch (error) {
     console.error(error);
     return false;

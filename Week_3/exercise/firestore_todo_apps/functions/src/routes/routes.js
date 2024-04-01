@@ -18,6 +18,7 @@ router.get(`/todos`, todoHandler.getAllTodos);
 router.get(`/todo/:id`, todoHandler.getTodoById);
 router.post(`/todos`, toDoInsertMiddleware, todoHandler.createTodo);
 router.put(`/todos/:id`, todoUpdateMiddleware, todoHandler.putTodo);
+router.put(`/todos`, todoUpdateMiddleware, todoHandler.multiplePutTodo);
 router.delete(`/todos/:id`, todoHandler.deleteTodo);
 
 module.exports = router;

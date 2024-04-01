@@ -33,7 +33,7 @@ async function selectAllTodos(query) {
     return {todos, totalPages};
   } catch (error) {
     console.error(error);
-    return [];
+    return {todos: [], totalPages: null};
   }
 }
 
@@ -93,14 +93,15 @@ async function updateTodo(id, values) {
     const docSnapshot = await docRef.get();
 
     if (docSnapshot.exists) {
-      const todos = await docRef.update({
+      await docRef.update({
         status: values.status,
         updated_at: new Date(),
         is_deleted: values.is_deleted,
       });
-      return todos.id;
+      return true;
     } else {
-      return { status: 404, message: "Todo not found" };
+      console.error(error);
+      return false;
     }
   } catch (error) {
     console.error(error);

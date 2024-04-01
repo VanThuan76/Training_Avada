@@ -14,19 +14,19 @@ const {
 async function getAllTodos(ctx) {
   try {
     const { todos, totalPages } = await selectAllTodos(ctx.query);
-    return (ctx.body = {
+    ctx.body = {
       status: 200,
       data: todos,
       message: "Successfully",
       totalPage: totalPages,
-    });
+    };
   } catch (error) {
     console.error(error);
-    return (ctx.body = {
+    ctx.body = {
       status: 400,
       sucess: false,
       errors: error.message,
-    });
+    };
   }
 }
 /**
@@ -39,18 +39,18 @@ async function getTodoById(ctx) {
     const { id } = ctx.params;
     const { fields } = ctx.request.query;
     const todo = await selectTodoById(id, fields);
-    return (ctx.body = {
+    ctx.body = {
       status: 200,
       data: todo,
       message: "Successfully",
-    });
+    };
   } catch (error) {
     console.error(error);
-    return (ctx.body = {
+    ctx.body = {
       status: 400,
       sucess: false,
       errors: error.message,
-    });
+    }
   }
 }
 
@@ -63,17 +63,17 @@ async function createTodo(ctx) {
   try {
     const body = ctx.request.body;
     insertTodo(body);
-    return (ctx.body = {
+    ctx.body = {
       status: 201,
       message: "Successfully",
-    });
+    };
   } catch (error) {
     console.error(error);
-    return (ctx.body = {
+    ctx.body = {
       status: 400,
       sucess: false,
       errors: error.message,
-    });
+    };
   }
 }
 /**
@@ -86,16 +86,49 @@ async function putTodo(ctx) {
     const { id } = ctx.params;
     const body = ctx.request.body;
     const data = updateTodo(id, body);
-    return (ctx.body = {
+    if(data) { 
+      ctx.body = {
+        status: 200,
+        data: { ...data },
+        message: "Successfully",
+      }
+    }else {
+      ctx.status = 400
+    }
+  } catch (error) {
+    console.error(error);
+    ctx.body = {
+      status: 400,
+      sucess: false,
+      errors: error.message,
+    }
+  }
+}
+/**
+ * Update multiple todos by array of todo ids
+ * @param  ctx
+ * @return {status: number; data: Array<{id: number; title: string; status: number; created_at: string; updated_at: string; is_deleted: boolean;}>; message: string}
+ */
+async function multiplePutTodo(ctx) {
+  try {
+    const ids = ctx.request.body.ids;
+    const todos = ctx.request.body.todos;
+    const updatedTodos = await Promise.all(
+      ids.map(async (id) => {
+        const updatedTodo = updateTodo(id, todos);
+        return updatedTodo;
+      })
+    );
+    ctx.body = {
       status: 200,
-      data: { ...data },
-      message: "Successfully",
-    });
+      data: updatedTodos,
+      message: "Successfully updated todos",
+    };
   } catch (error) {
     console.error(error);
     return (ctx.body = {
       status: 400,
-      sucess: false,
+      success: false,
       errors: error.message,
     });
   }
@@ -128,5 +161,6 @@ module.exports = {
   getTodoById,
   createTodo,
   putTodo,
+  multiplePutTodo,
   deleteTodo,
 };

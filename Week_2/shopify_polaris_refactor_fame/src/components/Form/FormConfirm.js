@@ -12,27 +12,64 @@ import useMutation from "@avada/hooks/api/useMutation";
  */
 const FormConfirm = (props) => {
   const mutate = useMutation();
+  let index = 0;
   const handleSubmit = async () => {
     if (!props.data) return;
     const updatedTodos = props.data.map((todo) => ({
-      ...todo,
       status: todo.status,
-      updated_at: new Date(),
       is_deleted: todo.status === 0 ? true : false,
     }));
-    try {
-      for (const todo of updatedTodos) {
-        const response = await mutate.put(`${process.env.REACT_APP_API_URL}/todos/${todo.id}`, todo);
-        if (response.status !== 200) {
-          throw new Error("Something went wrong");
-        }
+    if (props.data.length > 1) {
+      const ids = props.data.map((todo) => todo.id);
+      const todos = {
+        ids: ids,
+        todos: { ...updatedTodos[0] },
+      };
+      try {
+        const response = await mutate.put(
+          `${process.env.REACT_APP_API_URL}/todos`,
+          todos
+        );
+        updateTodo(
+          props.dispatch,
+          props.data.map((todo) => ({
+            ...todo,
+            status: todo.status,
+            is_deleted: todo.status === 0 ? true : false,
+          }))
+        );
+        props.setSelectedItems([]);
+        props.setIsToggle(false);
+      } catch (error) {
+        console.error("Error updating todos:", error);
+        throw error;
       }
-      updateTodo(props.dispatch, updatedTodos);
-      props.setSelectedItems([])
-      props.setIsToggle(false);
-    } catch (error) {
-      console.error("Error updating todos:", error);
-      throw error;
+    } else {
+      try {
+        for (const todo of updatedTodos) {
+          const response = await mutate.put(
+            `${process.env.REACT_APP_API_URL}/todos/${props.data[index].id}`,
+            todo
+          );
+          if (response.status !== 200) {
+            throw new Error("Something went wrong");
+          }
+          index++;
+        }
+        updateTodo(
+          props.dispatch,
+          props.data.map((todo) => ({
+            ...todo,
+            status: todo.status,
+            is_deleted: todo.status === 0 ? true : false,
+          }))
+        );
+        props.setSelectedItems([]);
+        props.setIsToggle(false);
+      } catch (error) {
+        console.error("Error updating todos:", error);
+        throw error;
+      }
     }
   };
   return (

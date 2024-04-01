@@ -9,7 +9,7 @@ const { PREFIX_DOMAIN_API, VERSION_ENDPOINT } = propsUrl;
 
 //Configuration for router with properties
 const router = new Router({
-  version: VERSION_ENDPOINT
+  version: VERSION_ENDPOINT,
 });
 
 //Declaration for each router
@@ -25,9 +25,11 @@ router.put(
   todoUpdateMiddleware,
   todoHandler.putTodo
 );
-router.delete(
-  `${PREFIX_DOMAIN_API}/todos/:id`,
-  todoHandler.deleteTodo
+router.put(
+  `${PREFIX_DOMAIN_API}/todos`,
+  todoUpdateMiddleware,
+  todoHandler.multiplePutTodo
 );
+router.delete(`${PREFIX_DOMAIN_API}/todos/:id`, todoHandler.deleteTodo);
 
 module.exports = router;
