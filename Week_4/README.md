@@ -32,6 +32,7 @@
 - Client public API(Return notifications)
     - With the setting and notifications list using SCRIPTTAG
 - Display the notifications
+![image]('/images/FlowDiagram_FrontStore.png')
 ### Data Structure
 - Collection: shopInfos, shops, subscriptions, settings, notifications
 - Shop(1 Setting)(~Notifiaction)
