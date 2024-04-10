@@ -1,7 +1,7 @@
 import DisplayManager from './managers/DisplayManager';
 import ApiManager from './managers/ApiManager';
 
-console.log('This is the script tag okes');
+console.log('This is the script tag okes :))))');
 
 (async () => {
   const apiManager = new ApiManager();

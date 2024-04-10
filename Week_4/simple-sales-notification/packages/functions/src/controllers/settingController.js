@@ -4,6 +4,7 @@ import {
   insertSetting
 } from '@functions/repositories/settingRepository';
 import {getCurrentShop} from '@functions/helpers/auth';
+import {DEFAULT_SETTINGS} from '@functions/const/other';
 
 /**
  * Get current setting of a shop
@@ -23,11 +24,16 @@ export async function getSettingByShopId(ctx) {
 /**
  * Create default setting of a shop
  *
- * @param {Object} body
+ * @param {Object} shopifyInfor
  * @returns {Promise<void>}
  */
-export async function initDefaultSetting(body) {
-  const setting = await insertSetting(body);
+export async function initDefaultSetting(shopifyInfor) {
+  const bodyDefaultSettings = {
+    ...DEFAULT_SETTINGS,
+    shopId: shopifyInfor.id,
+    shopifyDomain: shopifyInfor.shopName
+  };
+  const setting = await insertSetting(bodyDefaultSettings);
   ctx.body = {
     data: setting,
     success: true

@@ -1,5 +1,4 @@
-const Shopify = require('shopify-api-node');
-
+// const Shopify = require('shopify-api-node');
 (async () => {
   // await shopify.scriptTag.create({
   //   event: 'onload',

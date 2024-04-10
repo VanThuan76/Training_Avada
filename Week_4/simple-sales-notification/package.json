@@ -45,7 +45,7 @@
     "@avada/shopify-app": "3.48.1",
     "@avada/shopify-cli": "3.48.0",
     "concurrently": "^7.6.0",
-    "firebase-functions": "^4.8.2",
+    "firebase-functions": "^4.9.0",
     "shopify-api-node": "^3.13.1"
   }
 }

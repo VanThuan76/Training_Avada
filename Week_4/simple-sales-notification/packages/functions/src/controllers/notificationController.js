@@ -1,4 +1,7 @@
-import {selectAllNotifiaction, selectNotificationByDomain} from '@functions/repositories/notificationRepository';
+import {
+  selectAllNotifiaction,
+  selectNotificationByDomain
+} from '@functions/repositories/notificationRepository';
 
 /**
  * Get current setting of a shop
@@ -17,12 +20,21 @@ export async function getAllNotification(ctx) {
 export const getAllNotificationByShopify = async ctx => {
   try {
     const {shopifyDomain} = ctx.query;
-    const {notifications, settings} = await selectNotificationByDomain(shopifyDomain);
-    ctx.body = {
-      success: true,
-      notifications: notifications,
-      settings: settings
-    };
+    const result = await selectNotificationByDomain(shopifyDomain);
+    if (result) {
+      const {notifications, settings} = result;
+      ctx.body = {
+        success: true,
+        notifications: notifications,
+        settings: settings
+      };
+    } else {
+      ctx.body = {
+        success: false,
+        data: [],
+        error: 'No notifications found for the specified shopify domain'
+      };
+    }
   } catch (error) {
     console.log(error);
     ctx.body = {

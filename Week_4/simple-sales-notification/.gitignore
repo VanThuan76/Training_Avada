@@ -78,3 +78,7 @@ stats.json
 .runtimeconfig.json
 serviceAccount.json
 serviceAccount.*.json
+
+
+#ScriptTags
+functions/src/commands/scriptTag.js

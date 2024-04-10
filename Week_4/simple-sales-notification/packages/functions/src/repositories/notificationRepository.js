@@ -1,6 +1,8 @@
-import {Firestore, Timestamp} from '@google-cloud/firestore';
-import {parseQueryField} from '@functions/helpers/utils/parseQueryField';
 import moment from 'moment';
+import {Firestore, Timestamp} from '@google-cloud/firestore';
+import {getProductById} from '@functions/services/shopifyApiService';
+import {parseQueryField} from '@functions/helpers/utils/parseQueryField';
+import presentOrder from '@functions/presenters/orderPresenter';
 
 const firestore = new Firestore();
 /** @type CollectionReference */
@@ -35,26 +37,6 @@ export async function selectAllNotifiaction(query) {
     return false;
   }
 }
-/**
- * @typedef {Object} Notification
- * @param shopify
- * @returns {Promise<{Notification}>}
- */
-export async function selectItemNotifiaction(shopify) {
-  try {
-    const {shopName, _} = shopify;
-    const query = notiRef.where('shopDomain', '==', shopName).limit(1);
-    const notiSnapshot = await query.get();
-    if (notiSnapshot.empty) {
-      return null;
-    }
-    const notification = notiSnapshot.docs[0].data();
-    return notification;
-  } catch (error) {
-    console.error('Error fetching notification:', error);
-    return null;
-  }
-}
 
 /**
  * @param shopifyDomain
@@ -78,11 +60,9 @@ export async function selectNotificationByDomain(shopifyDomain) {
       ...docSettings.data()
     };
     const notifications = queryNotifications.docs.map(doc => {
-      const timestamp = moment(doc.data().timestamp.toDate()).from(moment());
       return {
         id: doc.id,
         ...doc.data(),
-        timestamp
       };
     });
     return {
@@ -94,51 +74,63 @@ export async function selectNotificationByDomain(shopifyDomain) {
     return null;
   }
 }
-
+/**
+ * @param {object} shopifyInfor
+ * @param {object} data
+ * @returns {Promise<{Notification}>}
+ */
+export async function selectItemNotification(shopifyInfor, data) {
+  try {
+    const productInfor = await getProductById(
+      shopifyInfor,
+      `gid://shopify/Product/${data.line_items[0].product_id}`
+    );
+    const notifi = await presentOrder({...data, ...productInfor}, 'webhook');
+    return notifi;
+  } catch (error) {
+    console.error('Error updating noti:', error);
+    return false;
+  }
+}
 /**
  * @typedef {Object} Notification
  * @param {Notification} notiData - Data for the new notification
+ * @param {'api'|| 'webhook'} type
  * @returns {Promise<string>} - Promise resolving to the newly generated document ID or null on error
  */
-export async function addNotification(notiData) {
+export async function addNotification(shopifyInfor, notiData, type = 'api') {
   try {
-    const newId = notiData.id || notiRef.doc().id;
-    const data = {
-      ...notiData,
-      createdAt: notiData.createdAt || firestore.FieldValue.serverTimestamp()
-    };
-    await notiRef.doc(newId).set(data);
-    return newId;
+    let orderId;
+    if (type === 'api' && notiData.orderId) {
+      orderId = notiData.orderId.split('/').pop();
+    } else if (type === 'webhook' && notiData.orderId) {
+      orderId = notiData.orderId;
+    } else {
+      console.error('Invalid orderId:', notiData.orderId);
+      return null;
+    }
+    const notiQuery = await notiRef
+      .where('shopifyId', '==', shopifyInfor.shopId)
+      .where('shopifyDomain', '==', shopifyInfor.shopName)
+      .where('orderId', '==', orderId)
+      .limit(1)
+      .get();
+
+      if (!notiQuery.empty) {
+      return false;
+    } else {
+      const data = {
+        ...notiData,
+        shopifyId: shopifyInfor.shopId,
+        shopifyDomain: shopifyInfor.shopName,
+        timestamp: Timestamp.fromDate(new Date(notiData.createdAt || moment().toISOString()))
+      };
+      await notiRef.add(data);
+      return true;
+    }
   } catch (error) {
     console.error('Error adding notification:', error);
     return null;
   }
 }
 
-/**
- * Trigger Orders Shopify to Notification Collections
- * @param {{shopId: string, data: Notification[]}} ctx - Context object containing shopId and data.
- * @return {Promise<any>} Return value of the function.
- */
-
-export async function initializeNotification(data) {
-  try {
-    const notiQuery = await notiRef
-      .where('orderId', '==', data.orderId)
-      .where('shopId', '==', data.shopId)
-      .limit(1)
-      .get();
-    if (notiQuery.size > 0) {
-      return null;
-    }
-    const newNotiDocRef = await notiRef.add({
-      ...data,
-      shopId: data.shopId,
-      timestamp: Timestamp.fromDate(new Date(data.createdAt))
-    });
-    return newNotiDocRef;
-  } catch (error) {
-    console.error('Error syncing notification:', error);
-    return false;
-  }
-}

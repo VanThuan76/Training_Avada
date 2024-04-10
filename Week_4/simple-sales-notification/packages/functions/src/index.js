@@ -3,7 +3,7 @@ import apiHandler from './handlers/api';
 import apiSaHandler from './handlers/apiSa';
 import authHandler from './handlers/auth';
 import authSaHandler from './handlers/authSa';
-import webhookHandler from './handlers/webhooks';
+import webhookHandler from './handlers/webhook';
 import clientHandler from './handlers/clientApi';
 
 export const api = functions.https.onRequest(apiHandler.callback());

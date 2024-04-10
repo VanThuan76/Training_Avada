@@ -23,10 +23,10 @@ import {
   pageRestrictionOptions,
   initStateSetting
 } from '@assets/const/setting';
-import DesktopPositionInput from '@assets/components/DesktopPositionInput/DesktopPositionInput';
-import TimeRangeSlider from '@assets/components/TimeRangeSlider/TimeRangeSlider';
 import {reducer} from '@assets/actions/storeActions';
 import {setSetting} from '@assets/actions/storeActions';
+import DesktopPositionInput from '@assets/components/DesktopPositionInput/DesktopPositionInput';
+import TimeRangeSlider from '@assets/components/TimeRangeSlider/TimeRangeSlider';
 import NotificationPopup from '@assets/components/NotificationPopup/NotificationPopup';
 import useFetchApi from '@assets/hooks/api/useFetchApi';
 import useBeforeUnload from '@assets/hooks/utils/useBeforeUnload';

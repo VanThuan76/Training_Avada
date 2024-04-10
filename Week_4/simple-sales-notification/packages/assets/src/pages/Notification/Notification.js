@@ -31,6 +31,7 @@ const Notification = () => {
     });
   };
   const paginationConfig = {
+    hasNext: true,
     onNext: () => nextPage(),
     onPrevious: () => prevPage(),
     label: `${limit} records / page`,

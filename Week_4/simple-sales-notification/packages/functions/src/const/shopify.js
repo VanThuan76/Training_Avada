@@ -32,3 +32,13 @@ query {
     }
   }
 `;
+export const QUERY_PRODUCT_BY_ID = productId => {
+  return `query {
+  product(id: "${productId}") {
+    title
+    featuredImage {
+      url
+    }
+  }
+}`;
+};
